@@ -1,0 +1,45 @@
+a {
+    color: #fff;
+    text-decoration: none;
+}
+
+a:link{
+    text-decoration: none;
+}
+
+button[type=submit]{
+    border:none;
+    background: none;
+}
+
+a.nav-link{
+    font-size: 20px;
+}
+
+#like, #dislike{
+    font-size: 20px;
+}
+
+.navbar{
+    box-shadow: 0px 5px 4px 1px rgba(0, 0, 0, 0.315);
+    background:#181D31;
+ }
+
+ #navbarDropdown{
+    color: #ffffff;
+ }
+
+ #home{
+    color: #ffffff;
+ }
+
+ #post_card{
+    width: 70%;
+    margin: auto;
+    box-shadow: 0px 1px 7px 1px rgba(0, 0, 0, 0.315);
+}
+
+#comment_container{
+    border-radius: 5px;
+    box-shadow: 0px 1px 7px 1px rgba(0, 0, 0, 0.315);
+}

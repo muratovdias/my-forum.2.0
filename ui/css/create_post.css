@@ -1,0 +1,53 @@
+label span{
+    font-style: italic;
+    color: darkgray;
+}
+
+option{
+    color:slategrey;
+}
+
+.post_container{
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+}
+
+.post_create{
+    width: 1000px;
+    height: min-content;
+    padding: 20px;  
+    border-radius: 12px;
+    border-radius: 25px;
+    background: #ffffff;
+}
+
+.post_create h1{
+    font-size: 36px;
+    margin-bottom: 25px;
+}
+
+.post_create form{
+    font-size: 20px;
+}
+
+.post_create form .form-group{
+    margin-bottom: 12px;
+}
+
+.post_create label{
+    padding-top: 10px;
+}
+
+.post_create textarea{
+    resize: none;
+}
+
+.post_create form input[type="submit"]{
+    font-size: 50px;
+}
+
+#tittle{
+    font-weight: bold;
+}
