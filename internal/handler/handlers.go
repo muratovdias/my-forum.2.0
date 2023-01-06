@@ -5,7 +5,9 @@ import (
 	"html/template"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/muratovdias/my-forum.2.0/internal/service"
+	"honnef.co/go/tools/go/callgraph/static"
 )
 
 type Handler struct {
@@ -18,7 +20,40 @@ func NewHandler(s *service.Service) *Handler {
 	}
 }
 
-func (h *Handler) InitRoutes() http.Handler {
+func (h *Handler) InitRoutes() *gin.Engine {
+	router := gin.New()
+
+	auth := router.Group("/auth")
+	{
+		auth.GET("/sign-up")
+		auth.GET("/sign-in")
+
+		auth.POST("/sign-up")
+		auth.POST("/sign-in")
+	}
+
+	main := router.Group("/")
+	{
+		main.GET("log-out")
+		main.GET("my-posts")
+		main.GET("category")
+		main.GET("my-favourites")
+		main.POST("like")
+		main.POST("dislike")
+	}
+
+	post := router.Group("/post")
+	{
+		post.GET("/create")
+		post.GET("/:id")
+
+		post.POST("/create")
+		post.POST("/like-comment")
+		post.POST("/dislike-comment")
+	}
+
+	router.Use(static.Serve("/css", static.LocalFile("ui/css", true)))
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", h.userIdentity(h.home))
 	mux.HandleFunc("/auth/sign-up", h.signUp)

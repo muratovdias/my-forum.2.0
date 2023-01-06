@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/muratovdias/my-forum.2.0/models"
 
 	"github.com/muratovdias/my-forum.2.0/internal/service"
 )
 
-func (h *Handler) signUp(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) signUp(c *gin.Context) {
 	switch r.Method {
 	case http.MethodGet:
 		if err := h.templExecute(w, "./ui/sign-up.html", nil); err != nil {
@@ -49,7 +50,7 @@ func (h *Handler) signUp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handler) signIn(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) signIn(c *gin.Context) {
 	switch r.Method {
 	case http.MethodGet:
 		if err := h.templExecute(w, "./ui/sign-in.html", nil); err != nil {
@@ -81,16 +82,16 @@ func (h *Handler) signIn(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handler) logOut(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		h.ErrorPage(w, http.StatusMethodNotAllowed, http.StatusText(http.StatusMethodNotAllowed))
+func (h *Handler) logOut(c *gin.Context) {
+	if c.Request.Method != http.MethodGet {
+		h.ErrorPage(c.Writer, http.StatusMethodNotAllowed, http.StatusText(http.StatusMethodNotAllowed))
 		fmt.Println("method: log-out")
 		return
 	}
-	http.SetCookie(w, &http.Cookie{
+	http.SetCookie(c.Writer, &http.Cookie{
 		Name:  "session_token",
 		Value: "",
 		Path:  "/",
 	})
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	http.Redirect(c.Writer, c.Request, "/", http.StatusSeeOther)
 }
