@@ -37,7 +37,7 @@ func (h *Handler) userIdentity(handler http.HandlerFunc) http.HandlerFunc {
 		}
 		if user.TokenDuration.Before(time.Now()) {
 			if err := h.services.DeleteToken(user.Token); err != nil {
-				http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+				h.ErrorPage(w, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 				return
 			}
 			http.Redirect(w, r, "/auth/sign-in", http.StatusSeeOther)

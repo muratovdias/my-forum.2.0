@@ -19,7 +19,6 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		if err := h.templExecute(w, "./ui/create_post.html", user); err != nil {
-			h.ErrorPage(w, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 			return
 		}
 	case http.MethodPost:
@@ -68,7 +67,6 @@ func (h *Handler) myPosts(w http.ResponseWriter, r *http.Request) {
 		Posts:    *posts,
 	}
 	if err := h.templExecute(w, "./ui/index.html", pageData); err != nil {
-		h.ErrorPage(w, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 		fmt.Println("my posts: templExecute()")
 		return
 	}
@@ -90,8 +88,7 @@ func (h *Handler) myFavourites(w http.ResponseWriter, r *http.Request) {
 		Posts:    *posts,
 	}
 	if err := h.templExecute(w, "./ui/index.html", pageData); err != nil {
-		h.ErrorPage(w, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
-		fmt.Println("my posts: templExecute()")
+		fmt.Println("my favourites: templExecute()")
 		return
 	}
 }
@@ -146,7 +143,6 @@ func (h *Handler) post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err := h.templExecute(w, "./ui/post.html", postData); err != nil {
-		h.ErrorPage(w, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 		fmt.Printf("post_handler: %s\n", err)
 		return
 	}

@@ -33,7 +33,6 @@ func (h *Handler) home(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		}
-
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
@@ -43,7 +42,6 @@ func (h *Handler) home(w http.ResponseWriter, r *http.Request) {
 		Posts:    **posts,
 	}
 	if err := h.templExecute(w, "./ui/index.html", pageData); err != nil {
-		h.ErrorPage(w, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 		return
 	}
 }

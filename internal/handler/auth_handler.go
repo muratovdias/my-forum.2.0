@@ -13,8 +13,6 @@ func (h *Handler) signUp(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		if err := h.templExecute(w, "./ui/sign-up.html", nil); err != nil {
-			h.ErrorPage(w, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
-			fmt.Println("sing in: templExecute()")
 			return
 		}
 	case http.MethodPost:
@@ -54,8 +52,6 @@ func (h *Handler) signIn(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		if err := h.templExecute(w, "./ui/sign-in.html", nil); err != nil {
-			h.ErrorPage(w, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
-			fmt.Println("sing in: templExecute()")
 			return
 		}
 	case http.MethodPost:
@@ -79,8 +75,7 @@ func (h *Handler) signIn(w http.ResponseWriter, r *http.Request) {
 		})
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	default:
-		h.ErrorPage(w, http.StatusMethodNotAllowed, http.StatusText(http.StatusMethodNotAllowed))
-		fmt.Println("method: sign-in")
+		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
 }

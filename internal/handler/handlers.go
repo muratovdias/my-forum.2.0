@@ -41,10 +41,12 @@ func (h *Handler) templExecute(w http.ResponseWriter, path string, data interfac
 	templ, err := template.ParseFiles(path)
 	if err != nil {
 		fmt.Println("ParseFiles()")
+		h.ErrorPage(w, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 		return err
 	}
 	if err = templ.Execute(w, data); err != nil {
 		fmt.Println("templExecute()")
+		h.ErrorPage(w, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 		return err
 	}
 	return nil
