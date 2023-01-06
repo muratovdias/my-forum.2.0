@@ -1,4 +1,4 @@
-module forum
+module github.com/muratovdias/my-forum.2.0
 
 go 1.19
 

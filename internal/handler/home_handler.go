@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"forum/models"
+	"github.com/muratovdias/my-forum.2.0/models"
 )
 
 func (h *Handler) home(w http.ResponseWriter, r *http.Request) {

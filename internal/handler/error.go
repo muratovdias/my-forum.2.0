@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"text/template"
 
-	"forum/models"
+	"github.com/muratovdias/my-forum.2.0/models"
 )
 
 func (h *Handler) ErrorPage(w http.ResponseWriter, status int, message string) {

@@ -5,8 +5,9 @@ import (
 	"log"
 	"time"
 
-	"forum/internal/repository"
-	"forum/models"
+	"github.com/muratovdias/my-forum.2.0/internal/repository"
+
+	"github.com/muratovdias/my-forum.2.0/models"
 
 	"github.com/gofrs/uuid"
 	"golang.org/x/crypto/bcrypt"

@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"forum/models"
+	"github.com/muratovdias/my-forum.2.0/models"
 )
 
 const ctxUserKey ctxKey = iota

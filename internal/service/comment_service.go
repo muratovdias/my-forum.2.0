@@ -1,8 +1,8 @@
 package service
 
 import (
-	"forum/internal/repository"
-	"forum/models"
+	"github.com/muratovdias/my-forum.2.0/internal/repository"
+	"github.com/muratovdias/my-forum.2.0/models"
 )
 
 type CommentService struct {

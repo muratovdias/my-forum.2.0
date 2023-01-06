@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"forum/models"
+	"github.com/muratovdias/my-forum.2.0/models"
 )
 
 func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {

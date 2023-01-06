@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"forum/internal/service"
-	"forum/models"
+	"github.com/muratovdias/my-forum.2.0/models"
+
+	"github.com/muratovdias/my-forum.2.0/internal/service"
 )
 
 func (h *Handler) signUp(w http.ResponseWriter, r *http.Request) {

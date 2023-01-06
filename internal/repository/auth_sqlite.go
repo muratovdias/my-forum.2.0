@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"forum/models"
+	"github.com/muratovdias/my-forum.2.0/models"
 )
 
 type AuthRepo struct {

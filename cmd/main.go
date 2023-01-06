@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"forum/internal/handler"
-	"forum/internal/repository"
-	"forum/internal/server"
-	"forum/internal/service"
 	"log"
+
+	"github.com/muratovdias/my-forum.2.0/internal/handler"
+	"github.com/muratovdias/my-forum.2.0/internal/repository"
+	"github.com/muratovdias/my-forum.2.0/internal/server"
+	"github.com/muratovdias/my-forum.2.0/internal/service"
 )
 
 const port = ":8888"

@@ -5,7 +5,7 @@ import (
 	"html/template"
 	"net/http"
 
-	"forum/internal/service"
+	"github.com/muratovdias/my-forum.2.0/internal/service"
 )
 
 type Handler struct {

@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"time"
 
-	"forum/models"
+	"github.com/muratovdias/my-forum.2.0/models"
 )
 
 type Authorization interface {
