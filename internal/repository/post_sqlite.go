@@ -84,6 +84,7 @@ func (r *PostRepo) MyPosts(id string) (*[]models.Post, error) {
 }
 
 func (r *PostRepo) MyFavourites(id int) (*[]models.Post, error) {
+	var posts []models.Post
 	query = `SELECT post_id FROM like WHERE user_id=$1 AND post_id != 0 AND active=1 ORDER BY id DESC`
 	rows, err = r.db.Query(query, id)
 	if err != nil {
@@ -98,7 +99,6 @@ func (r *PostRepo) MyFavourites(id int) (*[]models.Post, error) {
 		}
 		postsID = append(postsID, id)
 	}
-	var posts []models.Post
 	for _, id := range postsID {
 		post := new(models.Post)
 		query = `SELECT * FROM post WHERE id=$1 ORDER BY id DESC`

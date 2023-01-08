@@ -27,6 +27,7 @@ type Post interface {
 
 type Comment interface {
 	CreateComment(models.Comment) error
+	CheckCommentExists(string) error
 	GetCommentByPostID(int) (*[]models.Comment, error)
 }
 

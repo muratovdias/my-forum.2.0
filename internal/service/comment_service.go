@@ -22,3 +22,7 @@ func (s *CommentService) CreateComment(commnet models.Comment) error {
 func (s *CommentService) GetCommentByPostID(id int) (*[]models.Comment, error) {
 	return s.repo.GetCommentByPostID(id)
 }
+
+func (s *CommentService) CheckCommentExists(id string) error {
+	return nil
+}

@@ -27,6 +27,17 @@ func (r *CommentRepo) CreateComment(comment models.Comment) error {
 	return nil
 }
 
+func (r *CommentRepo) CheckCommentExists(id string) error {
+	query = `SELECT id FROM comment WHERE id =$1`
+	row := r.db.QueryRow(query, id)
+	var commentID int
+	if err := row.Scan(&commentID); err != nil {
+		fmt.Println("Check comment")
+		return err
+	}
+	return nil
+}
+
 func (r *CommentRepo) GetCommentByPostID(id int) (*[]models.Comment, error) {
 	query := `SELECT * FROM comment WHERE post_id =$1`
 	rows, err := r.db.Query(query, id)

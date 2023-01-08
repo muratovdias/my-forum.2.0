@@ -7,7 +7,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/muratovdias/my-forum.2.0/internal/service"
-	"honnef.co/go/tools/go/callgraph/static"
+	"github.com/muratovdias/my-forum.2.0/models"
+)
+
+var (
+	userInterface any
+	user          models.User
+	ok            bool
 )
 
 type Handler struct {
@@ -25,51 +31,40 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	auth := router.Group("/auth")
 	{
-		auth.GET("/sign-up")
-		auth.GET("/sign-in")
-
-		auth.POST("/sign-up")
-		auth.POST("/sign-in")
+		auth.GET("/sign-up", h.signUpGET)
+		auth.POST("/sign-up", h.signUpPOST)
+		auth.GET("/sign-in", h.signInGET)
+		auth.POST("/sign-in", h.signInPOST)
 	}
 
 	main := router.Group("/")
+
+	main.Use(h.userIdentity())
 	{
-		main.GET("log-out")
-		main.GET("my-posts")
-		main.GET("category")
-		main.GET("my-favourites")
-		main.POST("like")
-		main.POST("dislike")
+		main.GET("/", h.home)
+		main.GET("/log-out", h.logOut)
+		main.GET("/my-posts", h.myPosts)
+		main.GET("/my-favourites", h.myFavourites)
+		main.POST("/like-post", h.likePost)
+		main.POST("/dislike-post", h.dislikePost)
+		post := main.Group("/post")
+		{
+			post.GET("/create", h.createPostGET)
+			post.POST("/create", h.createPostPOST)
+
+			post.GET("/:id", h.postGET)
+			post.POST("/:id/comment", h.postPOST)
+
+			comment := post.Group("/comment")
+			{
+				comment.POST("/:id/like", h.likeComment)
+				comment.POST("/:id/dislike", h.dislikeComment)
+			}
+		}
 	}
+	router.Static("/ui/css", "./ui/css")
 
-	post := router.Group("/post")
-	{
-		post.GET("/create")
-		post.GET("/:id")
-
-		post.POST("/create")
-		post.POST("/like-comment")
-		post.POST("/dislike-comment")
-	}
-
-	router.Use(static.Serve("/css", static.LocalFile("ui/css", true)))
-
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", h.userIdentity(h.home))
-	mux.HandleFunc("/auth/sign-up", h.signUp)
-	mux.HandleFunc("/auth/sign-in", h.signIn)
-	mux.HandleFunc("/log-out", h.logOut)
-	mux.HandleFunc("/post/create", h.userIdentity(h.createPost))
-	mux.HandleFunc("/my-posts", h.userIdentity(h.myPosts))
-	mux.HandleFunc("/my-favourites", h.userIdentity(h.myFavourites))
-	mux.HandleFunc("/post/", h.userIdentity(h.post))
-	mux.HandleFunc("/like-post", h.userIdentity(h.likePost))
-	mux.HandleFunc("/dislike-post", h.userIdentity(h.dislikePost))
-	mux.HandleFunc("/like-comment", h.userIdentity(h.likeComment))
-	mux.HandleFunc("/dislike-comment", h.userIdentity(h.dislikeComment))
-	mux.Handle("/ui/css/", http.StripPrefix("/ui/css/", http.FileServer(http.Dir("./ui/css/"))))
-	// handler := h.Logging(mux)
-	return mux
+	return router
 }
 
 func (h *Handler) templExecute(w http.ResponseWriter, path string, data interface{}) error {
@@ -79,6 +74,7 @@ func (h *Handler) templExecute(w http.ResponseWriter, path string, data interfac
 		h.ErrorPage(w, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 		return err
 	}
+
 	if err = templ.Execute(w, data); err != nil {
 		fmt.Println("templExecute()")
 		h.ErrorPage(w, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))

@@ -236,7 +236,7 @@
       </div>
     </div>
     <!-- Post End -->
-    {{end}}
+    
     <!-- Comment -->
 
     <div class="row d-flex justify-content-center mt-3 mb-5" >
@@ -244,7 +244,7 @@
       <div class="card shadow-0 border" style="background-color: #f0f2f5">
         <div class="card-body p-4" id="comment_container">
           <!-- Comment Input -->
-          <form action="/post/{{.Post.ID}}" method="post">
+          <form action="/post/{{.Post.ID}}/comment" method="post">
             <div class="form-outline d-flex mb-0">
               <input
                 type="text"
@@ -262,7 +262,8 @@
           </form>
           <!-- Comment Input End -->
           <!-- Comment Card -->
-          {{if .Comments}} {{range .Comments}}
+          {{if .Comments}} 
+          {{range .Comments}}
           <div class="card mt-4">
             <div class="card-body pb-1">
               <p
@@ -285,24 +286,24 @@
                 </div>
                 <!-- Vote Div -->
                 <div class="d-flex">
-                  <form action="/like-comment" method="post">
+                  <form action="/post/comment/{{.ID}}/like" method="post">
                     <button type="submit" value="{{.ID}}" name="like">
                       <i
                         class="far fa-thumbs-up fa-xs text-black"
                         style="font-size: 13px; margin-top: -0.16rem"
                       >
-                        {{.Likes}}</i
-                      >
+                        {{.Likes}}
+                      </i>
                     </button>
                   </form>
-                  <form action="/dislike-comment" method="post">
+                  <form action="/post/comment/{{.ID}}/dislike" method="post">
                     <button type="submit" value="{{.ID}}" name="dislike">
                       <i
                         class="far fa-thumbs-down ms-2 fa-xs text-black"
                         style="font-size: 13px; margin-top: -0.16rem"
                       >
-                        {{.Dislikes}}</i
-                      >
+                        {{.Dislikes}}
+                      </i>
                     </button>
                   </form>
                 </div>
@@ -312,6 +313,7 @@
           </div>
           {{end}} 
           {{end}}
+        {{end}}
           <!-- Comment Card End -->
         </div>
       </div>

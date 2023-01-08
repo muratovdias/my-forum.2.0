@@ -1,6 +1,8 @@
 package service
 
 import (
+	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"strconv"
@@ -58,5 +60,10 @@ func (s *PostService) GetPostByID(id string) (*models.Post, error) {
 }
 
 func (s *PostService) MyFavourites(id int) (*[]models.Post, error) {
-	return s.repo.MyFavourites(id)
+	_, err := s.repo.MyFavourites(id)
+	if errors.Is(err, sql.ErrNoRows) {
+		return &[]models.Post{}, nil
+	} else {
+		return s.repo.MyFavourites(id)
+	}
 }
