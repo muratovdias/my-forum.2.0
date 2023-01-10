@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/muratovdias/my-forum.2.0/config"
 	"github.com/muratovdias/my-forum.2.0/internal/handler"
 	"github.com/muratovdias/my-forum.2.0/internal/repository"
 	"github.com/muratovdias/my-forum.2.0/internal/server"
@@ -13,7 +14,7 @@ import (
 const port = ":8888"
 
 func main() {
-	configDB := repository.NewConfDB()
+	configDB := config.NewConfDB()
 	db, err := repository.InitDB(configDB)
 	if err != nil {
 		log.Fatalf("failed to initialize db : %s", err.Error())

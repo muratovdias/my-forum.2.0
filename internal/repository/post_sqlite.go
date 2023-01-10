@@ -1,23 +1,23 @@
 package repository
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 
 	"github.com/muratovdias/my-forum.2.0/models"
+	"gorm.io/gorm"
 )
 
 var (
-	rows *sql.Rows
+	rows *gorm.Rows
 	err  error
 )
 
 type PostRepo struct {
-	db *sql.DB
+	db *gorm.DB
 }
 
-func NewPostRepo(db *sql.DB) *PostRepo {
+func NewPostRepo(db *gorm.DB) *PostRepo {
 	return &PostRepo{
 		db: db,
 	}

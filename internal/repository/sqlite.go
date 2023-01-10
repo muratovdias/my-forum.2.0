@@ -1,11 +1,13 @@
 package repository
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/muratovdias/my-forum.2.0/config"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 const (
@@ -60,33 +62,17 @@ const (
 
 const path = "repository: "
 
-type ConfigDB struct {
-	Driver string
-	Path   string
-	Name   string
-}
-
-func NewConfDB() *ConfigDB {
-	return &ConfigDB{
-		Driver: "sqlite3",
-		Name:   "forum.db",
-	}
-}
-
-func InitDB(c *ConfigDB) (*sql.DB, error) {
-	db, err := sql.Open(c.Driver, c.Name)
+func InitDB(c *config.ConfigDB) (*gorm.DB, error) {
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=%s", c.Host, c.User, c.Password, c.DbName, c.Port, c.SslMode)
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
-	if err := db.Ping(); err != nil {
-		return nil, err
-	}
-
 	return db, nil
 }
 
-func CreateTables(db *sql.DB) error {
+func CreateTables(db *gorm.DB) error {
 	tables := []string{userTable, postTable, commentTable, likeTable, dislikeTable}
 	for _, table := range tables {
 		_, err := db.Exec(table)

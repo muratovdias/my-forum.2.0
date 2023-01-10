@@ -1,17 +1,17 @@
 package repository
 
 import (
-	"database/sql"
 	"fmt"
 
 	"github.com/muratovdias/my-forum.2.0/models"
+	"gorm.io/gorm"
 )
 
 type CommentRepo struct {
-	db *sql.DB
+	db *gorm.DB
 }
 
-func NewCommentRepo(db *sql.DB) *CommentRepo {
+func NewCommentRepo(db *gorm.DB) *CommentRepo {
 	return &CommentRepo{
 		db: db,
 	}

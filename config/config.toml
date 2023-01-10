@@ -1,0 +1,7 @@
+[gorm]
+Host="localhost"
+User="admin"
+Password="1111"
+DbName="forum.db"
+Port=7777
+SslMode="disable"

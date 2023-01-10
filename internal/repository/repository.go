@@ -1,10 +1,10 @@
 package repository
 
 import (
-	"database/sql"
 	"time"
 
 	"github.com/muratovdias/my-forum.2.0/models"
+	"gorm.io/gorm"
 )
 
 type Authorization interface {
@@ -66,7 +66,7 @@ type Repository struct {
 	Dislike
 }
 
-func NewRepository(db *sql.DB) *Repository {
+func NewRepository(db *gorm.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthRepo(db),
 		Post:          NewPostRepo(db),

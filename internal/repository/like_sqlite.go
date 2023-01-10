@@ -1,20 +1,20 @@
 package repository
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 
 	"github.com/muratovdias/my-forum.2.0/models"
+	"gorm.io/gorm"
 )
 
 var query string
 
 type LikeRepo struct {
-	db *sql.DB
+	db *gorm.DB
 }
 
-func NewLikeRepo(db *sql.DB) *LikeRepo {
+func NewLikeRepo(db *gorm.DB) *LikeRepo {
 	return &LikeRepo{
 		db: db,
 	}

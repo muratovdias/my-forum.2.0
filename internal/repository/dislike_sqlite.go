@@ -1,17 +1,17 @@
 package repository
 
 import (
-	"database/sql"
 	"fmt"
 
 	"github.com/muratovdias/my-forum.2.0/models"
+	"gorm.io/gorm"
 )
 
 type DislikeRepo struct {
-	db *sql.DB
+	db *gorm.DB
 }
 
-func NewDislikeRepo(db *sql.DB) *DislikeRepo {
+func NewDislikeRepo(db *gorm.DB) *DislikeRepo {
 	return &DislikeRepo{
 		db: db,
 	}
