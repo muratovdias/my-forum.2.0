@@ -18,9 +18,10 @@ func NewCommentRepo(db *gorm.DB) *CommentRepo {
 }
 
 func (r *CommentRepo) CreateComment(comment models.Comment) error {
-	query := `INSERT INTO comment (user_id, post_id, text, author, date) VALUES ($1, $2, $3, $4, $5)`
-	_, err := r.db.Exec(query, comment.UserID, comment.PostID, comment.Text, comment.Author, comment.Date)
-	if err != nil {
+	// query := `INSERT INTO comment (user_id, post_id, text, author, date) VALUES ($1, $2, $3, $4, $5)`
+	// _, err := r.db.Exec(query, comment.UserID, comment.PostID, comment.Text, comment.Author, comment.Date)
+	row := r.db.Create(&comment)
+	if row.Error != nil {
 		fmt.Printf("repo: %s\n", err)
 		return fmt.Errorf(path+"create comment: %w", err)
 	}
@@ -28,12 +29,10 @@ func (r *CommentRepo) CreateComment(comment models.Comment) error {
 }
 
 func (r *CommentRepo) CheckCommentExists(id string) error {
-	query = `SELECT id FROM comment WHERE id =$1`
-	row := r.db.QueryRow(query, id)
-	var commentID int
-	if err := row.Scan(&commentID); err != nil {
-		fmt.Println("Check comment")
-		return err
+	row := r.db.First(&models.Comment{}, "id=?", id)
+	if row.Error != nil {
+		fmt.Println("Check comment: ", row.Error)
+		return row.Error
 	}
 	return nil
 }

@@ -11,52 +11,52 @@ import (
 )
 
 const (
-	userTable = `CREATE TABLE IF NOT EXISTS user (
-		id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-		email TEXT UNIQUE,
-		username TEXT UNIQUE,
+	userTable = `CREATE TABLE IF NOT EXISTS users (
+		id SERIAL PRIMARY KEY,
+		email VARCHAR(30) UNIQUE,
+		username VARCHAR(30) UNIQUE,
 		password TEXT,
 		token TEXT DEFAULT NULL,
-		token_duration DATETIME DEFAULT NULL
+		token_duration TIMESTAMP DEFAULT NULL
 		);`
-	postTable = `CREATE TABLE IF NOT EXISTS post(
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
+	postTable = `CREATE TABLE IF NOT EXISTS posts(
+		id SERIAL PRIMARY KEY,
 		author_id INTEGER,
-		like INTEGER DEFAULT 0,
-		dislike INTEGER DEFAULT 0,
-		title TEXT,
-		category TEXT,
+		likes INTEGER DEFAULT 0,
+		dislikes INTEGER DEFAULT 0,
+		title VARCHAR(150),
+		category VARCHAR(50),
 		content TEXT,
-		author	TEXT, 
+		author	VARCHAR(30), 
 		date text,
-		FOREIGN KEY (author_id) REFERENCES user (id)
+		FOREIGN KEY (author_id) REFERENCES users (id)
 	);`
-	commentTable = `CREATE TABLE IF NOT EXISTS comment(
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
+	commentTable = `CREATE TABLE IF NOT EXISTS comments(
+		id SERIAL PRIMARY KEY,
 		user_id INTEGER,
 		post_id INTEGER,
-		like INTEGER DEFAULT 0,
-		dislike INTEGER DEFAULT 0,
+		likes INTEGER DEFAULT 0,
+		dislikes INTEGER DEFAULT 0,
 		text TEXT,
-		author	TEXT, 
+		author	VARCHAR(30), 
 		date TEXT,
-		FOREIGN KEY (post_id) REFERENCES post (id)
+		FOREIGN KEY (post_id) REFERENCES posts (id)
 	);`
-	likeTable = `CREATE TABLE IF NOT EXISTS like(
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
+	likeTable = `CREATE TABLE IF NOT EXISTS likes(
+		id SERIAL PRIMARY KEY,
 		user_id INTEGER,
 		post_id INTEGER DEFAULT 0,
 		comment_id INTEGER DEFAULT 0,
 		active	INTEGER DEFAULT 0,
-		FOREIGN KEY (post_id) REFERENCES post (id)
+		FOREIGN KEY (post_id) REFERENCES posts (id)
 	);`
-	dislikeTable = `CREATE TABLE IF NOT EXISTS dislike(
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
+	dislikeTable = `CREATE TABLE IF NOT EXISTS dislikes(
+		id SERIAL PRIMARY KEY,
 		user_id INTEGER,
 		post_id INTEGER DEFAULT 0,
 		comment_id INTEGER DEFAULT 0,
 		active	INTEGER DEFAULT 0,
-		FOREIGN KEY (post_id) REFERENCES post (id)
+		FOREIGN KEY (post_id) REFERENCES posts (id)
 	);`
 )
 
@@ -69,15 +69,16 @@ func InitDB(c *config.ConfigDB) (*gorm.DB, error) {
 		log.Println(err)
 		return nil, err
 	}
+
 	return db, nil
 }
 
 func CreateTables(db *gorm.DB) error {
 	tables := []string{userTable, postTable, commentTable, likeTable, dislikeTable}
 	for _, table := range tables {
-		_, err := db.Exec(table)
-		if err != nil {
-			return fmt.Errorf(path+"create tables: %w", err)
+		r := db.Exec(table)
+		if r.Error != nil {
+			return fmt.Errorf(path+"create tables: %w", r.Error)
 		}
 	}
 	return nil
