@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -25,6 +26,7 @@ func (h *Handler) likePost(c *gin.Context) {
 		return
 	}
 	postID1 := c.Request.FormValue("like1")
+	fmt.Println(postID1)
 	postID2 := c.Request.FormValue("like2")
 
 	if postID1 == "" {
@@ -63,6 +65,7 @@ func (h *Handler) dislikePost(c *gin.Context) {
 		return
 	}
 	postID1 := c.Request.FormValue("dislike1")
+	fmt.Println(postID1)
 	postID2 := c.Request.FormValue("dislike2")
 
 	if postID1 == "" {

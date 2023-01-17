@@ -24,29 +24,21 @@ func NewPostRepo(db *gorm.DB) *PostRepo {
 }
 
 func (r *PostRepo) CreatePost(post *models.Post) error {
-	query := `INSERT INTO post (author_id, title, category, content, author, date) VALUES ($1, $2, $3, $4, $5, $6)`
-	_, err = r.db.Exec(query, post.AuthorID, post.Title, post.Category, post.Content, post.Author, post.Date)
-	if err != nil {
-		return fmt.Errorf(path+"create post: %w", err)
+	result := r.db.Create(&post)
+	if result.Error != nil {
+		log.Printf("error create post: %s", result.Error)
+		return result.Error
 	}
 	return nil
 }
 
 func (r *PostRepo) GetAllPost() (*[]models.Post, error) {
-	rows, err = r.db.Query(`SELECT * FROM post ORDER BY id DESC`)
-	if err != nil {
-		return nil, fmt.Errorf(path+"get all post: %w", err)
+	var posts *[]models.Post
+	result := r.db.Find(&posts)
+	if result.Error != nil {
+		return nil, result.Error
 	}
-	var posts []models.Post
-	for rows.Next() {
-		post := new(models.Post)
-		if err = rows.Scan(&post.ID, &post.AuthorID, &post.Likes, &post.Dislikes, &post.Title, &post.Category, &post.Content, &post.Author, &post.Date); err != nil {
-			return nil, fmt.Errorf(path+"get all post, scan: %w", err)
-		}
-		post.Category = " " + post.Category
-		posts = append(posts, *post)
-	}
-	return &posts, nil
+	return posts, nil
 }
 
 func (r *PostRepo) GetPostByCategory(category string) (*[]models.Post, error) {
