@@ -31,39 +31,16 @@ type Comment interface {
 	GetCommentByPostID(int) (*[]models.Comment, error)
 }
 
-type Like interface {
-	SetPostLike(models.Like) error
-	SetCommentLike(models.Like) error
-	LikeDislike
-}
+type UserPostVote interface{}
 
-type Dislike interface {
-	SetPostDislike(models.DisLike) error
-	SetCommentDislike(models.DisLike) error
-	LikeDislike
-}
-
-type LikeDislike interface {
-	// Post//
-	CheckPostDislike(int, int) error
-	CheckPostLike(int, int) error
-	DeletePostDislike(int, int) error
-	DeletePostLike(int, int) error
-	UpdatePostVote(int) error
-	// Comment//
-	CheckCommentDislike(int, int) error
-	CheckCommentLike(int, int) error
-	DeleteCommentDislike(int, int) error
-	DeleteCommentLike(int, int) error
-	UpdateCommentVote(int) error
-}
+type UserCommentVote interface{}
 
 type Repository struct {
 	Authorization
 	Post
 	Comment
-	Like
-	Dislike
+	UserPostVote
+	UserCommentVote
 }
 
 func NewRepository(db *gorm.DB) *Repository {
@@ -71,7 +48,5 @@ func NewRepository(db *gorm.DB) *Repository {
 		Authorization: NewAuthRepo(db),
 		Post:          NewPostRepo(db),
 		Comment:       NewCommentRepo(db),
-		Like:          NewLikeRepo(db),
-		Dislike:       NewDislikeRepo(db),
 	}
 }

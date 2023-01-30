@@ -22,8 +22,6 @@ const (
 	postTable = `CREATE TABLE IF NOT EXISTS posts(
 		id SERIAL PRIMARY KEY,
 		author_id INTEGER,
-		likes INTEGER DEFAULT 0,
-		dislikes INTEGER DEFAULT 0,
 		title VARCHAR(150),
 		category VARCHAR(50),
 		content TEXT,
@@ -35,28 +33,26 @@ const (
 		id SERIAL PRIMARY KEY,
 		user_id INTEGER,
 		post_id INTEGER,
-		likes INTEGER DEFAULT 0,
-		dislikes INTEGER DEFAULT 0,
 		text TEXT,
 		author	VARCHAR(30), 
 		date TEXT,
 		FOREIGN KEY (post_id) REFERENCES posts (id)
 	);`
-	likeTable = `CREATE TABLE IF NOT EXISTS likes(
+	userPostVote = `CREATE TABLE IF NOT EXISTS user_post_votes(
 		id SERIAL PRIMARY KEY,
 		user_id INTEGER,
-		post_id INTEGER DEFAULT 0,
-		comment_id INTEGER DEFAULT 0,
-		active	INTEGER DEFAULT 0,
+		post_id INTEGER,
+		vote	BOOLEAN,
+		FOREIGN KEY (user_id) REFERENCES users (id),
 		FOREIGN KEY (post_id) REFERENCES posts (id)
 	);`
-	dislikeTable = `CREATE TABLE IF NOT EXISTS dislikes(
+	userCommentVote = `CREATE TABLE IF NOT EXISTS user_comment_votes(
 		id SERIAL PRIMARY KEY,
 		user_id INTEGER,
-		post_id INTEGER DEFAULT 0,
-		comment_id INTEGER DEFAULT 0,
-		active	INTEGER DEFAULT 0,
-		FOREIGN KEY (post_id) REFERENCES posts (id)
+		comment_id INTEGER,
+		vote	BOOLEAN,
+		FOREIGN KEY (user_id) REFERENCES users (id),
+		FOREIGN KEY (comment_id) REFERENCES comments (id)
 	);`
 )
 
@@ -74,7 +70,7 @@ func InitDB(c *config.ConfigDB) (*gorm.DB, error) {
 }
 
 func CreateTables(db *gorm.DB) error {
-	tables := []string{userTable, postTable, commentTable, likeTable, dislikeTable}
+	tables := []string{userTable, postTable, commentTable, userPostVote, userCommentVote}
 	for _, table := range tables {
 		r := db.Exec(table)
 		if r.Error != nil {
