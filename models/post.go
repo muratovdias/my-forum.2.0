@@ -8,4 +8,6 @@ type Post struct {
 	Content  string
 	Author   string
 	Date     string
+	Likes    int
+	Dislikes int
 }

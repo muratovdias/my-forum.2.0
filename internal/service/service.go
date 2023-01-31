@@ -27,22 +27,20 @@ type Comment interface {
 	GetCommentByPostID(int) (*[]models.Comment, error)
 }
 
-type Like interface {
-	SetPostLike(models.Like) error
-	SetCommentLike(models.Like) error
+type PostVote interface {
+	ManipulationPostVote(models.UserPostVote) error
 }
 
-type Dislike interface {
-	SetPostDislike(models.DisLike) error
-	SetCommentDislike(models.DisLike) error
+type CommentVote interface {
+	MaipulationCommentVote(models.UserCommentVote) error
 }
 
 type Service struct {
 	Authorization
 	Post
 	Comment
-	Like
-	Dislike
+	PostVote
+	CommentVote
 }
 
 func NewService(repo repository.Repository) *Service {
@@ -50,7 +48,7 @@ func NewService(repo repository.Repository) *Service {
 		Authorization: NewAuthService(repo.Authorization),
 		Post:          NewPostService(repo.Post),
 		Comment:       NewCommetService(repo.Comment),
-		Like:          NewLikeService(repo.Like),
-		Dislike:       NewDislikeService(repo.Dislike),
+		PostVote:      NewPostVoteService(repo.PostVote),
+		CommentVote:   NewCommentVoteService(repo.CommentVote),
 	}
 }

@@ -31,16 +31,26 @@ type Comment interface {
 	GetCommentByPostID(int) (*[]models.Comment, error)
 }
 
-type UserPostVote interface{}
+type PostVote interface {
+	SetVotePost(p models.UserPostVote) error
+	GetPostVoteByID(userID, postID int) (models.UserPostVote, error)
+	DeletePostVote(p models.UserPostVote) error
+	ManipulationPostVote(p models.UserPostVote) error
+}
 
-type UserCommentVote interface{}
+type CommentVote interface {
+	SetVoteComment(c models.UserCommentVote) error
+	GetCommentVoteByID(userID, commentID int) (models.UserCommentVote, error)
+	DeleteCommentVote(c models.UserCommentVote) error
+	ManipulationCommentVote(c models.UserCommentVote) error
+}
 
 type Repository struct {
 	Authorization
 	Post
 	Comment
-	UserPostVote
-	UserCommentVote
+	PostVote
+	CommentVote
 }
 
 func NewRepository(db *gorm.DB) *Repository {
@@ -48,5 +58,7 @@ func NewRepository(db *gorm.DB) *Repository {
 		Authorization: NewAuthRepo(db),
 		Post:          NewPostRepo(db),
 		Comment:       NewCommentRepo(db),
+		PostVote:      NewPostVoteRepo(db),
+		CommentVote:   NewCommentVoteRepo(db),
 	}
 }

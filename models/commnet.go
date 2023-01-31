@@ -7,4 +7,6 @@ type Comment struct {
 	Text     string
 	Author   string
 	Date     string
+	Likes    int
+	Dislikes int
 }
