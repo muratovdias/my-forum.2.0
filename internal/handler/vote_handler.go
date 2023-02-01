@@ -51,6 +51,7 @@ func (h *Handler) likePost(c *gin.Context) {
 		PostID: id,
 		Vote:   true,
 	}
+	fmt.Println(like)
 	if err = h.services.PostVote.ManipulationPostVote(like); err != nil {
 		h.ErrorPage(c.Writer, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 		return

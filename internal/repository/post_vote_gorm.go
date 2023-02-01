@@ -40,10 +40,20 @@ func (v *PostVoteRepo) ManipulationPostVote(p models.UserPostVote) error {
 		return fmt.Errorf("getVoteByID:%w", err)
 	}
 	if (userVote == models.UserPostVote{}) {
-		err = v.SetVotePost(p)
+		err := v.db.Transaction(func(tx *gorm.DB) error {
+			err = v.SetVotePost(p)
+			if err != nil {
+				return fmt.Errorf("set post vote:%w", err)
+			}
+			if p.Vote {
+				tx.Table("posts").Where("author_id=? AND id=?", p.UserID, p.PostID).UpdateColumn("likes", gorm.Expr("likes+ ?", 1))
+			}
+			return nil
+		})
 		if err != nil {
-			return fmt.Errorf("set post vote:%w", err)
+			return err
 		}
+		// если такая запись есть, опираясь на голос обновляем запись. Удаляем или же меняем голос на противоположный
 	} else {
 		if userVote.Vote == p.Vote {
 			err := v.DeletePostVote(p)

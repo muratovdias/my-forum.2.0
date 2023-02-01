@@ -27,6 +27,8 @@ const (
 		content TEXT,
 		author	VARCHAR(30), 
 		date text,
+		likes INTEGER,
+		dislikes INTEGER,
 		FOREIGN KEY (author_id) REFERENCES users (id)
 	);`
 	commentTable = `CREATE TABLE IF NOT EXISTS comments(
@@ -36,6 +38,8 @@ const (
 		text TEXT,
 		author	VARCHAR(30), 
 		date TEXT,
+		likes INTEGER,
+		dislikes INTEGER,
 		FOREIGN KEY (post_id) REFERENCES posts (id)
 	);`
 	userPostVote = `CREATE TABLE IF NOT EXISTS user_post_votes(

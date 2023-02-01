@@ -15,6 +15,10 @@ func NewPostVoteService(postRepo repository.PostVote) *PostVoteService {
 	}
 }
 
-func (p PostVoteService) ManipulationPostVote(models.UserPostVote) error {
+func (p PostVoteService) ManipulationPostVote(v models.UserPostVote) error {
+	err := p.postRepo.ManipulationPostVote(v)
+	if err != nil {
+		return err
+	}
 	return nil
 }
